@@ -58,7 +58,7 @@ IF = _"if"_
 THEN = _"then"_
 WHILE = _"while"_
 DO = _"do"_
-COMPARISON = _op:("<"/">"/"<="/">=")_ 
+COMPARISON = _op:("<="/">="/"<"/">"/"==")_ 
 COLON = _";"_
 Q = _"?"_
 X = _"!"_
