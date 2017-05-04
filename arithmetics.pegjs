@@ -17,6 +17,7 @@ statement
   / BEGIN statement (COLON statement)* END
   / IF condition THEN statement
   / WHILE condition DO statement
+  / FUNCTION LEFTPAR (ID)* RIGHTPAR LEFTBRACKET block RIGHTBRACKET
 
 condition
   = ODD expression
@@ -48,6 +49,9 @@ CONSTASSIGN = _'=' _
 ASSIGN = _ ':=' _
 COMMA = _","_
 
+FUNCTION = _"function"_
+LEFTBRACKET = _"{"_
+RIGHTBRACKET = _"}"_
 CONST = _"const"_
 VAR = _"var"_
 PROCEDURE = _"procedure"_
@@ -58,7 +62,7 @@ IF = _"if"_
 THEN = _"then"_
 WHILE = _"while"_
 DO = _"do"_
-COMPARISON = _op:("<="/">="/"<"/">"/"==")_ 
+COMPARISON = _op:("<="/">="/"<"/">"/"==")_
 COLON = _";"_
 Q = _"?"_
 X = _"!"_
