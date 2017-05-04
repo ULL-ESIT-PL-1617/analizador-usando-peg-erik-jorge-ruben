@@ -17,7 +17,7 @@ statement
   / BEGIN statement (COLON statement)* END
   / IF condition THEN statement
   / WHILE condition DO statement
-  / FUNCTION LEFTPAR (ID)* RIGHTPAR LEFTBRACKET block RIGHTBRACKET
+  / FUNCTION ID LEFTPAR (ID (COMMA ID)*)? RIGHTPAR LEFTBRACKET block RIGHTBRACKET
 
 condition
   = ODD expression
