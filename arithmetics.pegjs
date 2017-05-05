@@ -1,7 +1,18 @@
 {
-  var util = require('util');
-  var tree = {
-  };
+var tree = function(f, r) {
+    if (r.length > 0) {
+      var last = r.pop();
+      var result = {
+        type:  last[0],
+        left: tree(f, r),
+        right: last[1]
+      };
+    }
+    else {
+      var result = f;
+    }
+    return result;
+  }
 }
 start
   = b:block {return b;}
@@ -10,6 +21,7 @@ block
   = constant:(CONST ID CONSTASSIGN NUMBER (COMMA ID CONSTASSIGN NUMBER)* COLON)?
     vars:(VAR ID (COMMA ID)* COLON)?
     proc:(PROCEDURE ID COLON block COLON)*
+    funct: (FUNCTION ID LEFTPAR (ID (COMMA ID)*)? RIGHTPAR LEFTBRACKET block RIGHTBRACKET COLON)*
     est:statement
         { var bloque = {};
           var constantes = {};
@@ -22,7 +34,7 @@ block
             }
           }
 
-          var variables = {}
+          var variables = {};
           if (vars){
             variables [vars[1]] = null;
             if (vars[2]){
@@ -35,39 +47,77 @@ block
           proc.forEach ( function (element){
             procedimientos [element[1]] = element[3];
           });
+          var funciones = {};
+          funct.forEach ( function (element){
+            funciones [element[1]] = element[6];
+            var parametros = {};
+            if (element [3]){
+              parametros [element [3] [0]] = null;
+              element [3][1].forEach (function (x){
+                parametros [x[1]] = null;
+              });
+            }
+            funciones [[element[1]]] ["Parametros"] = parametros;
+          });
           bloque ["constantes"] = constantes;
           bloque ["variables"] = variables;
           bloque ["procedimientos"] = procedimientos;
+          bloque ["funciones"] = funciones;
           bloque ["sentencias"] = est;
           return bloque;
         }
 
 statement
-  = ID ASSIGN expression
-  / CALL ID
-  / Q ID
-  / X expression
-  / BEGIN statement (COLON statement)* END
-  / IF condition THEN statement
-  / WHILE condition DO statement
-  / FUNCTION ID LEFTPAR (ID (COMMA ID)*)? RIGHTPAR LEFTBRACKET block RIGHTBRACKET
-  / expression
+  = id:ID ASSIGN value:expression {return {type: "assign", left: id, right: value }}
+  / CALL id:ID {return {type: "call", procedimiento: id }}
+  / Q id:ID {return {type : "?", id:id}}
+  / X exp:expression {return {type : "!", expresion:exp}}
+  / BEGIN first:statement next:(COLON statement)* END { var stats = {}
+                                                        var counter = 2;
+                                                        stats ["1"] = first;
+                                                        next.forEach((x)=>{stats [""+counter] = x[1];
+                                                          counter++;
+                                                        });
+                                                        return {type: "block", code: stats}
+                                                      }
+  / IF cond:condition THEN th:statement els:(ELSE statement)? { if (els){
+                                                                els = els[1];
+                                                              }
+                                                              return {type: "if",
+                                                              condition: cond,
+                                                              then: th,
+                                                              else: els }}
+  / WHILE cond:condition DO d:statement { return {type:"while", condition: cond, do: d};}
 
 condition
-  = ODD expression
-  / expression COMPARISON expression
+  = ODD right:expression { return {type: "odd", right: right }}
+  / left:expression cond:COMPARISON right:expression {return {type: cond, left: left, right: right}}
 
 expression
-    = (ADDOP)? term (ADDOP term)*
+    = signo:(ADDOP)? left:term right:(ADDOP term)* {  if (signo == "-"){
+                                                        left = "-"+left;
+                                                      }
+                                                      return tree(left, right);
+                                                    }
 
 term
-    = factor (MULOP factor)*
+    = left:factor right:(MULOP factor)* {return tree(left, right);}
 
 factor
-    = ID LEFTPAR (ID (COMMA ID)*)? RIGHTPAR
+    = id:ID LEFTPAR params:(expression (COMMA expression)*)? RIGHTPAR { var parametros = {};
+                                                                        if (params){
+                                                                          parametros ["1"] = params [0];
+                                                                          var counter = 2;
+                                                                          params [1].forEach((x)=>{
+                                                                            parametros [""+counter] = x [1]
+                                                                            counter++;
+                                                                          });
+                                                                        }
+
+    return {type: "functionCall", id:id, parametros: parametros}}
     / ID
     / NUMBER
-    / LEFTPAR expression RIGHTPAR
+    / LEFTPAR exp:expression RIGHTPAR  {return {type: "parentesis", value:exp }}
 
 _ = $[ \t\n\r]*
 ADDOP = PLUS / MINUS
@@ -95,9 +145,10 @@ BEGIN = _"begin"_
 END = _"end"_
 IF = _"if"_
 THEN = _"then"_
+ELSE = _"else"_
 WHILE = _"while"_
 DO = _"do"_
-COMPARISON = _op:("<="/">="/"<"/">"/"==")_
+COMPARISON = _ op:("<="/">="/"<"/">"/"==")_ {return op;}
 COLON = _";"_
 Q = _"?"_
 X = _"!"_
