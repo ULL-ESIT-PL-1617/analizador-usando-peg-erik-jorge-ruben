@@ -1,5 +1,7 @@
 # Practica 7: Analizador usando PEG
 
+[![Build Status](https://travis-ci.org/ULL-ESIT-PL-1617/analizador-usando-peg-erik-jorge-ruben.svg?branch=master)](https://travis-ci.org/ULL-ESIT-PL-1617/analizador-usando-peg-erik-jorge-ruben)
+
 ## Alumnos
 
 
