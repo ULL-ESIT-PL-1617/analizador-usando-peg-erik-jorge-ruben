@@ -81,7 +81,7 @@ factor
 Las declaraciones se pueden realizar al  comienzo de un bloque de código, dentro de un procedimiento una función o al comiezo del programa.
 
 Se pueden declarar, siempre en este orden:
-  * Constantes
+  * Constantes (const)
   ~~~
   const a = 1, b = 2, c = 3;
   ~~~
