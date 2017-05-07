@@ -68,10 +68,10 @@ block
         }
 
 statement
-  = id:ID ASSIGN value:expression {return {type: "assign", left: id, right: value }}
-  / CALL id:ID {return {type: "call", procedimiento: id }}
-  / Q id:ID {return {type : "?", id:id}}
-  / X exp:expression {return {type : "!", expresion:exp}}
+  = id:ID assign:ASSIGN value:expression {return {type: assign, left: id, right: value }}
+  / call:CALL id:ID {return {type: call, procedimiento: id }}
+  / q:Q id:ID {return {type : q, id:id}}
+  / x:X exp:expression {return {type : x, expresion:exp}}
   / BEGIN first:statement next:(COLON statement)* END { var stats = {}
                                                         var counter = 2;
                                                         stats ["1"] = first;
@@ -90,7 +90,7 @@ statement
   / WHILE cond:condition DO d:statement { return {type:"while", condition: cond, do: d};}
 
 condition
-  = ODD right:expression { return {type: "odd", right: right }}
+  = odd:ODD right:expression { return {type: odd, right: right }}
   / left:expression cond:COMPARISON right:expression {return {type: cond, left: left, right: right}}
 
 expression
@@ -132,7 +132,7 @@ RIGHTPAR = _")"_
 NUMBER = _ digits:$[0-9]+ _ { return parseInt(digits, 10); }
 ID = _ id:$([a-z_]i$([a-z0-9_]i*)) _ {return id; }
 CONSTASSIGN = _'=' _
-ASSIGN = _ ':=' _
+ASSIGN = _ ':=' _{return ":=";}
 COMMA = _","_
 
 FUNCTION = _"function"_
@@ -141,7 +141,7 @@ RIGHTBRACKET = _"}"_
 CONST = _"const"_
 VAR = _"var"_
 PROCEDURE = _"procedure"_
-CALL = _"call"_
+CALL = _"call"_ {return "call";}
 BEGIN = _"begin"_
 END = _"end"_
 IF = _"if"_
@@ -151,6 +151,6 @@ WHILE = _"while"_
 DO = _"do"_
 COMPARISON = _ op:("<="/">="/"<"/">"/"==")_ {return op;}
 COLON = _";"_
-Q = _"?"_
-X = _"!"_
-ODD = _"odd"_
+Q = _"?"_ {return "?";}
+X = _"!"_{return "!";}
+ODD = _"odd"_{return "odd";}
