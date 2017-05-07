@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/ULL-ESIT-PL-1617/analizador-usando-peg-erik-jorge-ruben/issues"
   },
-  "homepage": "https://github.com/ULL-ESIT-PL-1617/analizador-usando-peg-erik-jorge-ruben#readme"
+  "homepage": "https://github.com/ULL-ESIT-PL-1617/analizador-usando-peg-erik-jorge-ruben#readme",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.3.0"
+  }
 }
