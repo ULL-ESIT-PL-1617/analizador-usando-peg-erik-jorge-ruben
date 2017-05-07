@@ -114,7 +114,8 @@ factor
                                                                           });
                                                                         }
 
-    return {type: "functionCall", id:id, parametros: parametros}}
+                                                                        return {type: "functionCall", id:id, parametros: parametros}
+                                                                        }
     / ID
     / NUMBER
     / LEFTPAR exp:expression RIGHTPAR  {return {type: "parentesis", value:exp }}
