@@ -23,16 +23,11 @@
 | Rubén Labrador Páez          | [Rubén](https://campusvirtual.ull.es/1617/user/view.php?id=9476&course=1148) | [alu0100309553](https://github.com/alu0100309553) |
 
 
-
-## Despliegue Heroku
-
-| Nombre                       | Enlace |
-| ---------------------------- | ------ |
-| Jorge Alonso Hernández       |        |
-| Erik Andreas Barreto de Vera |        |
-| Rubén Labrador Páez          |        |
-
 ## Definición de la Práctica
+
+* Pruebas
+
+![](pruebas.png)
 
 *  [Descripción de la práctica](https://casianorodriguezleon.gitbooks.io/ull-esit-1617/content/practicas/practicapegparser.html)
 

@@ -34,7 +34,7 @@ describe("<---Test para comprobar que se cumple la salida esperada--->", functio
   });
   it("# function funcId (a, b, c){  const d = 1, e = 2;  var f, g, h;  begin    f := a + d;    g := b + e  end }; a := funcId(2, b, 2+2)", function(){
     var tree = `
-                {"constantes":{},"variables":{},"procedimientos":{},"funciones":{},"sentencias":{"type":"while","condition":{"type":"<=","left":"a","right":10},"do":{"type":"block","code":{"1":{"type":"assign","left":"a","right":{"type":"+","left":"a","right":2}},"2":{"type":"assign","left":"b","right":{"type":"+","left":"b","right":2}}}}}}
+                {"constantes":{},"variables":{},"procedimientos":{},"funciones":{"funcId":{"constantes":{"d":1,"e":2},"variables":{"f":null,"g":null,"h":null},"procedimientos":{},"funciones":{},"sentencias":{"type":"block","code":{"1":{"type":"assign","left":"f","right":{"type":"+","left":"a","right":"d"}},"2":{"type":"assign","left":"g","right":{"type":"+","left":"b","right":"e"}}}},"Parametros":{"a":null,"b":null,"c":null}}},"sentencias":{"type":"assign","left":"a","right":{"type":"functionCall","id":"funcId","parametros":{"1":2,"2":"b","3":{"type":"+","left":2,"right":2}}}}}
                 `;
     tree = removeSpaces(tree);
     var res = removeSpaces(JSON.stringify(PEG.parse('function funcId (a, b, c){  const d = 1, e = 2;  var f, g, h;  begin    f := a + d;    g := b + e  end }; a := funcId(2, b, 2+2)'), null, 2))
