@@ -1,6 +1,10 @@
 var chai = require('chai');
 var PEG = require('./arithmetics.js');
 var expect = chai.expect;
+var blanket = require("blanket")({
+   /* options are passed as an argument object to the require statement */
+   "pattern": "/"
+});
 
 function removeSpaces(str){
   return str.replace(/\s/g,'');;
